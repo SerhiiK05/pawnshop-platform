@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>User List</h2>
+
+
+
+  <div id="loading" style="display:none;">Loading...</div>
+
+  {% include "includes/pagination.html" with items=users %}
+
+  <script>
+    window.onscroll = function() {
+      var loadingElement = document.getElementById('loading');
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        loadingElement.style.display = 'block';
+
+        var nextPage = '{{ users.has_next }}';
+        if (nextPage === 'True') {
+          var nextPageUrl = '{{ users.next_page_number }}';
+
+          fetch('?page=' + nextPageUrl)
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('users-list').innerHTML += data;
+              loadingElement.style.display = 'none';
+            });
+        } else {
+          loadingElement.innerHTML = 'No more users to load.';
+        }
+      }
+    }
+  </script>
+
+{% endblock %}

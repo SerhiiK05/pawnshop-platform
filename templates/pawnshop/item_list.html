@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Item List</h2>
+
+
+
+  <div id="loading" style="display:none;">Loading...</div>
+
+  <script>
+    window.onscroll = function() {
+      var loadingElement = document.getElementById('loading');
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        loadingElement.style.display = 'block';
+
+        var nextPage = '{{ items.has_next }}';
+        if (nextPage === 'True') {
+          var nextPageUrl = '{{ items.next_page_number }}';
+
+          fetch('?page=' + nextPageUrl)
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('items-list').innerHTML += data;
+              loadingElement.style.display = 'none';
+            });
+        } else {
+          loadingElement.innerHTML = 'No more items to load.';
+        }
+      }
+    }
+  </script>
+
+{% endblock %}
