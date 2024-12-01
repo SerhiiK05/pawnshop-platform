@@ -1,3 +1,6 @@
+import string
+from random import random
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -60,6 +63,15 @@ class Loan(models.Model):
         related_name="loans_user"
     )
 
+    def referral_bonus(self):
+        referral_bonus = ReferralBonus.objects.filter(referrer=self.user)
+        for bonus in referral_bonus:
+            if bonus.bonus_awarded and (bonus.bonus_used is False):
+                self.total_amount += bonus.bonus_amount
+                self.save()
+                return True
+        return False
+
 
 class Payment(models.Model):
     PAYMENT_METHOD_CHOICES = [
@@ -100,3 +112,23 @@ class ReferralBonus(models.Model):
     bonus_amount = models.DecimalField(max_digits=10, decimal_places=2)
     bonus_awarded = models.BooleanField(default=False)
     bonus_used = models.BooleanField(default=False)
+
+    def generate_referral_code(self):
+        if not self.referral_code:
+            code = "".join(random.choices(string.ascii_uppercase, k=10))
+            self.referral_code = code
+            self.save()
+        return self.referral_code
+
+    def assign_random_bonus(self):
+        if self.bonus_awarded:
+            possible_bonuses = [100, 200, 300, 400, 500]
+            self.bonus_amount = random.choice(possible_bonuses)
+
+    def referral_bonus_usage(self):
+        if Loan.referral_bonus():
+            self.bonus_amount = 0
+            self.bonus_used = True
+            self.save()
+            return True
+        return False
