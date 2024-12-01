@@ -3,6 +3,7 @@ from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views import generic
 
+from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm
 from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
 
 
@@ -55,7 +56,7 @@ class ItemDetailView(generic.DetailView):
 
 class ItemCreateView(generic.CreateView):
     model = Item
-    fields = ["name", "description", "value", "status", "user"]
+    form_class = ItemForm
     queryset = Item.objects.select_related("user")
     success_url = reverse_lazy("pawnshop:item-list")
 
@@ -85,8 +86,7 @@ class LoanDetailView(generic.DetailView):
 
 class LoanCreateView(generic.CreateView):
     model = Loan
-    fields = ["total_amount", "interest_rate", "term", "status", "created_date",
-              "item", "user"]
+    form_class = LoanForm
     queryset = Loan.objects.select_related("user").select_related("item")
     success_url = reverse_lazy("pawnshop:loan-list")
 
@@ -110,8 +110,7 @@ class PaymentListView(generic.ListView):
 
 class PaymentCreateView(generic.CreateView):
     model = Payment
-    fields = ["amount", "transaction_date", "payment_method", "payment_status",
-              "loan", ]
+    form_class = PaymentForm
     queryset = Payment.objects.select_related("loan")
     success_url = reverse_lazy("pawnshop:payment-list")
 
@@ -135,8 +134,7 @@ class ReferralBonusListView(generic.ListView):
 
 class ReferralBonusCreateView(generic.CreateView):
     model = ReferralBonus
-    fields = ["referrer", "referral_code", "invitee", "invitee_email",
-              "bonus_amount", "bonus_awarded", "bonus_used",]
+    form_class = ReferralBonusForm
     queryset = ReferralBonus.objects.select_related("user")
 
 
