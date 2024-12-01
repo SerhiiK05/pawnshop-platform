@@ -1,3 +1,5 @@
+from django.shortcuts import render
+from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -6,12 +8,11 @@ from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
 
 # Create your views here.
 def index():
-    pass
+    return render(request, "pawnshop/index.html")
 
 
 class UserListView(generic.ListView):
     model = User
-
 
 
 class UserDetailView(generic.DetailView):
@@ -105,13 +106,6 @@ class LoanDeleteView(generic.DeleteView):
 
 class PaymentListView(generic.ListView):
     model = Payment
-
-
-class PaymentDetailView(generic.DetailView):
-    model = Payment
-    fields = ["amount", "transaction_date", "payment_method", "payment_status",
-              "loan", ]
-    queryset = Payment.objects.select_related("loan")
 
 
 class PaymentCreateView(generic.CreateView):

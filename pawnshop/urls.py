@@ -1,6 +1,5 @@
 from django.urls import path
 
-from pawnshop.models import Payment, ReferralBonus
 from pawnshop.views import (
     index,
     UserListView,
