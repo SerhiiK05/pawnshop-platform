@@ -1,5 +1,5 @@
 import string
-from random import random
+import random
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
@@ -12,7 +12,7 @@ class User(AbstractUser):
         ("client", "Client"),
     ]
     balance = models.DecimalField(max_digits=10, decimal_places=2)
-    role = models.CharField(choices=USER_CHOICES)
+    role = models.CharField(max_length=10, choices=USER_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -25,11 +25,12 @@ class Item(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(choices=ITEM_STATUS_CHOICES)
+    status = models.CharField(max_length=15, choices=ITEM_STATUS_CHOICES)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        related_name="items"
+        related_name="items",
+        null=True,
     )
 
 
@@ -49,13 +50,14 @@ class Loan(models.Model):
     ]
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     interest_rate = models.DecimalField(max_digits=5, decimal_places=2)
-    term = models.IntegerField(choices=LOAN_TERM_CHOICES)
-    status = models.CharField(choices=LOAN_STATUS_CHOICES)
+    term = models.CharField(max_length=10, choices=LOAN_TERM_CHOICES)
+    status = models.CharField(max_length=20, choices=LOAN_STATUS_CHOICES)
     created_date = models.DateTimeField(auto_now_add=True)
     item = models.OneToOneField(
         Item,
         on_delete=models.SET_NULL,
-        related_name="loan_item"
+        related_name="loan_item",
+        null=True
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -86,8 +88,8 @@ class Payment(models.Model):
     ]
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_time = models.DateTimeField(auto_now_add=True)
-    payment_method = models.CharField(choices=PAYMENT_METHOD_CHOICES)
-    payment_status = models.CharField(choices=PAYMENT_STATUS_CHOICES)
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES)
     loan = models.ForeignKey(
         Loan,
         on_delete=models.CASCADE,
@@ -99,14 +101,15 @@ class ReferralBonus(models.Model):
     referrer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        related_name="referrer"
+        related_name="referrer",
+        null=True,
     )
     referral_code = models.CharField(max_length=100, unique=True)
-    invitee = models.ForeignKey(
+    invitee = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        unique=True,
         on_delete=models.SET_NULL,
-        related_name="invitee"
+        related_name="invitee",
+        null=True,
     )
     invitee_email = models.EmailField(unique=True)
     bonus_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -124,11 +127,14 @@ class ReferralBonus(models.Model):
         if self.bonus_awarded:
             possible_bonuses = [100, 200, 300, 400, 500]
             self.bonus_amount = random.choice(possible_bonuses)
+            self.save()
 
     def referral_bonus_usage(self):
-        if Loan.referral_bonus():
-            self.bonus_amount = 0
-            self.bonus_used = True
-            self.save()
-            return True
+        loans = Loan.objects.filter(user=self.referrer)
+        for loan in loans:
+            if loan.referral_bonus():
+                self.bonus_amount = 0
+                self.bonus_used = True
+                self.save()
+                return True
         return False
