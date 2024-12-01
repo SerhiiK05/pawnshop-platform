@@ -116,6 +116,10 @@ class ReferralBonus(models.Model):
     bonus_awarded = models.BooleanField(default=False)
     bonus_used = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = "referral-bonus"
+        verbose_name_plural = "referral-bonuses"
+
     def generate_referral_code(self):
         if not self.referral_code:
             code = "".join(random.choices(string.ascii_uppercase, k=10))
