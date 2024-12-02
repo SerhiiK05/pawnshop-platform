@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Loan Details</h2>
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="alert {{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<div>
+    <p>Loan ID: {{ loan.id }}</p>
+    <p>Remaining Amount: {{ loan.total_amount }}</p>
+    <p>Status: {{ loan.get_status_display }}</p>
+</div>
+
+<form id="payment-form" method="post" action="{% url "pawnshop:payment-process" %}">
+    {% csrf_token %}
+    <input type="hidden" name="user_id" value="{{ request.user.id }}">
+    <input type="hidden" name="loan_id" value="{{ loan.id }}">
+
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" step="0.01" required>
+
+    <label for="payment_method">Payment Method:</label>
+    <select name="payment_method" required>
+        <option value="cash">Card</option>
+        <option value="card">Cash</option>
+        <option value="bank_transfer">Bank Transfer</option>
+    </select>
+
+    <button type="submit">Submit Payment</button>
+</form>
+{% endblock %}

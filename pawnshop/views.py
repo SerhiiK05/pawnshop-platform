@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 
 from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, UserCreationForm
 from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
@@ -145,3 +147,52 @@ class ReferralBonusUpdateView(generic.UpdateView):
 class ReferralBonusDeleteView(generic.DeleteView):
     model = ReferralBonus
     success_url = reverse_lazy("pawnshop:referral-bonus-list")
+
+
+class PaymentProcessView(View):
+    def post(self, request, *args, **kwargs):
+        user_id = request.POST.get("user_id")
+        loan_id = request.POST.get("loan_id")
+        amount = float(request.POST.get("amount", 0))
+        payment_method = request.POST.get("payment_method")
+
+        try:
+            user = User.objects.get(id=user_id)
+            loan = Loan.objects.get(id=loan_id)
+
+            if user.balance < amount:
+                messages.error(request, "Insufficient balance for the payment.")
+                return redirect("loan_detail", pk=loan_id)
+
+            if loan.status in ["P", "paid_off"]:
+                messages.warning(request, "This loan is already paid off.")
+                return redirect("loan_detail", pk=loan_id)
+
+            with transaction.atomic():
+                user.balance -= amount
+                user.save()
+                Payment.objects.create(
+                    amount=amount,
+                    payment_method=payment_method,
+                    payment_status="paid",
+                    loan=loan,
+                )
+                loan.total_amount -= amount
+                if loan.total_amount <= 0:
+                    loan.status = "P"
+                    loan.total_amount = 0
+                loan.save()
+            messages.success(request, "Payment successfully processed.")
+            return redirect("loan_detail", pk=loan_id)
+
+        except Loan.DoesNotExist:
+            messages.error(request, "Loan not found.")
+            return redirect("loan_list")
+
+        except User.DoesNotExist:
+            messages.error(request, "User not found.")
+            return redirect("loan_list")
+
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect("loan_list")

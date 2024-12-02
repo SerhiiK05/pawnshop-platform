@@ -24,7 +24,7 @@ from pawnshop.views import (
     ReferralBonusListView,
     ReferralBonusCreateView,
     ReferralBonusUpdateView,
-    ReferralBonusDeleteView,
+    ReferralBonusDeleteView, PaymentProcessView,
 )
 
 app_name = "pawnshop"
@@ -118,5 +118,10 @@ urlpatterns = [
         "referral_bonuses/<int:pk>/delete",
         ReferralBonusDeleteView.as_view(),
         name="referral-bonus-delete"
+    ),
+    path(
+        "payment_process/",
+        PaymentProcessView.as_view(),
+        name="payment-process"
     ),
 ]
