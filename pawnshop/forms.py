@@ -23,6 +23,11 @@ class ItemForm(forms.ModelForm):
             raise ValidationError("Value should be more than 0")
         return value
 
+
+class ItemNameSearchForm(forms.Form):
+    name = forms.CharField(max_length=255, required=False)
+
+
 class LoanForm(forms.ModelForm):
     class Meta:
         model = Loan

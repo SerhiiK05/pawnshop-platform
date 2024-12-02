@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 
-from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, UserCreationForm
+from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, UserCreationForm, ItemNameSearchForm
 from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
 
 
@@ -44,6 +44,20 @@ class UserDeleteView(generic.DeleteView):
 
 class ItemListView(generic.ListView):
     model = Item
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+
+        context["search_form"] = ItemNameSearchForm()
+        return context
+
+    def get_queryset(self):
+        form = ItemNameSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset.filter(
+                title__icontains=form.cleaned_data["name"]
+            )
 
 
 class ItemDetailView(generic.DetailView):
