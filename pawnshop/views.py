@@ -55,10 +55,10 @@ class ItemListView(generic.ListView):
         form = ItemNameSearchForm(self.request.GET)
 
         if form.is_valid():
-            return self.queryset.filter(
-                title__icontains=form.cleaned_data["name"]
+            return Item.objects.filter(
+                name__icontains=form.cleaned_data["name"]
             )
-
+        return Item.objects.all()
 
 class ItemDetailView(generic.DetailView):
     model = Item

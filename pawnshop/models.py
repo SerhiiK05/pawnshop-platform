@@ -71,6 +71,8 @@ class Loan(models.Model):
             if bonus.bonus_awarded and (bonus.bonus_used is False):
                 self.total_amount += bonus.bonus_amount
                 self.save()
+                bonus.bonus_used = True
+                bonus.save()
                 return True
         return False
 
@@ -112,7 +114,9 @@ class ReferralBonus(models.Model):
         null=True,
     )
     invitee_email = models.EmailField(unique=True)
-    bonus_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    bonus_amount = models.DecimalField(max_digits=10,
+                                       decimal_places=2,
+                                       null=True)
     bonus_awarded = models.BooleanField(default=False)
     bonus_used = models.BooleanField(default=False)
 
