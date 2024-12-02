@@ -1,14 +1,12 @@
 from django.shortcuts import render
-from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views import generic
 
-from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm
+from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, UserCreationForm
 from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
 
 
-# Create your views here.
-def index():
+def index(request):
     return render(request, "pawnshop/index.html")
 
 
@@ -25,9 +23,7 @@ class UserDetailView(generic.DetailView):
 
 class UserCreateView(generic.CreateView):
     model = User
-    fields = ["username", "email", "first_name",
-              "last_name", "balance", "role", "created_at",
-              "updated_at",]
+    form_class = UserCreationForm
     success_url = reverse_lazy("pawnshop:user-list")
 
 
@@ -118,7 +114,7 @@ class PaymentCreateView(generic.CreateView):
 class PaymentUpdateView(generic.UpdateView):
     model = Payment
     fields = ["amount", "transaction_date", "payment_method", "payment_status",
-              "loan", ]
+              "loan", "transaction_date",]
     queryset = Payment.objects.select_related("loan")
     success_url = reverse_lazy("pawnshop:payment-list")
 

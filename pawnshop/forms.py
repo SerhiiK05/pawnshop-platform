@@ -1,6 +1,14 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 
-from pawnshop.models import Item, Loan, Payment, ReferralBonus
+from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
+
+
+class UserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ["username", "email", "first_name",
+              "last_name", "password1", "password2", "role",]
 
 
 class ItemForm(forms.ModelForm):
@@ -19,8 +27,8 @@ class LoanForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = ["amount", "transaction_date", "payment_method", "payment_status",
-                  "loan",]
+        fields = ["amount", "payment_method", "payment_status",
+                  "loan"]
 
 
 class ReferralBonusForm(forms.ModelForm):
