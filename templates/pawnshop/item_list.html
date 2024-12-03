@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <h1>Items List</h1>
+
+    <a href="{% url 'pawnshop:item-create' %}" class="btn btn-primary mb-3">Create New Item</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Value</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in item_list %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.value }}</td>
+                    <td>{{ item.get_status_display }}</td>
+                    <td>
+                        <a href="{% url 'pawnshop:item-update' pk=item.id %}" class="btn btn-warning btn-sm">Update</a>
+                        <a href="{% url 'pawnshop:item-delete' pk=item.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No items found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+  <div id="loading" style="display:none;">Loading...</div>
+
+  <script>
+    window.onscroll = function() {
+      var loadingElement = document.getElementById('loading');
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        loadingElement.style.display = 'block';
+
+        var nextPage = '{{ items.has_next }}';
+        if (nextPage === 'True') {
+          var nextPageUrl = '{{ items.next_page_number }}';
+
+          fetch('?page=' + nextPageUrl)
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('items-list').innerHTML += data;
+              loadingElement.style.display = 'none';
+            });
+        } else {
+          loadingElement.innerHTML = 'No more items to load.';
+        }
+      }
+    }
+  </script>

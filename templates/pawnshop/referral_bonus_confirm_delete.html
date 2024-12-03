@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-danger">Confirm Deletion</h2>
+        <p class="lead">Are you sure you want to delete this referral bonus?</p>
+
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Referral Bonus Information:</strong></p>
+                <ul class="list-unstyled">
+                    <li><strong>Referral Code:</strong> {{ referral_bonus.referral_code }}</li>
+                    <li><strong>Referrer:</strong> {{ referral_bonus.referrer.username }}</li>
+                    <li><strong>Invitee:</strong> {{ referral_bonus.invitee.username }}</li>
+                    <li><strong>Bonus Amount:</strong> {{ referral_bonus.bonus_amount }}</li>
+                    <li><strong>Bonus Awarded:</strong> {{ referral_bonus.bonus_awarded }}</li>
+                </ul>
+
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete Referral Bonus</button>
+                </form>
+
+                <a href="{% url 'referral_bonus_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <h1>Payments List</h1>
+
+    <a href="{% url 'pawnshop:item-create' %}" class="btn btn-primary mb-3">Create New Payment</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Loan</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>Transaction Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payment_list %}
+                <tr>
+                    <td>{{ payment.loan }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.payment_method }}</td>
+                    <td>{{ payment.payment_status }}</td>
+                    <td>{{ payment.transaction.time }}</td>
+                    <td>
+                        <a href="{% url 'pawnshop:payment-update' pk=payment.id %}" class="btn btn-warning btn-sm">Update</a>
+                        <a href="{% url 'pawnshop:payment-delete' pk=payment.id %}" class="btn btn-danger btn-sm">Delete</a>
+
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No payments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+  <div id="loading" style="display:none;">Loading...</div>
+
+  {% include "includes/pagination.html" with items=payments %}
+
+  <script>
+    window.onscroll = function() {
+      var loadingElement = document.getElementById('loading');
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        loadingElement.style.display = 'block';
+
+        var nextPage = '{{ payments.has_next }}';
+        if (nextPage === 'True') {
+          var nextPageUrl = '{{ payments.next_page_number }}';
+
+          fetch('?page=' + nextPageUrl)
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('payments-list').innerHTML += data;
+              loadingElement.style.display = 'none';
+            });
+        } else {
+          loadingElement.innerHTML = 'No more payments to load.';
+        }
+      }
+    }
+  </script>
+
+{% endblock %}

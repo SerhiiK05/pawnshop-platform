@@ -1,0 +1,136 @@
+.navbar {
+    padding: 10px 0;
+}
+
+.navbar-nav .nav-link.btn-primary {
+    border-radius: 20px;
+    padding: 8px 20px;
+}
+
+/* Загальні стилі для кнопок */
+.navbar-nav .nav-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Hover ефекти для кнопок */
+.navbar-nav .nav-link:hover {
+    background-color: #495057;
+    color: white;
+}
+
+.navbar-nav .nav-link:active {
+    background-color: #17a2b8;
+    color: white;
+}
+body {
+    background-color: #f4f7f6;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #343a40;
+    color: white;
+    padding: 80px 20px;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.hero-section .btn {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 30px;
+}
+
+/* Services Section */
+.services {
+    padding: 60px 0;
+    background-color: #ffffff;
+}
+
+.services h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.service-box {
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.service-box h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.service-box .btn {
+    font-size: 1rem;
+    padding: 10px 25px;
+    border-radius: 30px;
+}
+
+/* Featured Items Section */
+.featured-items {
+    padding: 60px 0;
+    background-color: #f1f1f1;
+}
+
+.featured-items h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.featured-items .card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.featured-items .btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    border-radius: 30px;
+}
+
+/* FAQ Section */
+.faq {
+    background-color: #ffffff;
+    padding: 60px 0;
+}
+
+.faq h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+.btn {
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.btn:hover {
+    background-color: #007bff;
+    color: white;
+}

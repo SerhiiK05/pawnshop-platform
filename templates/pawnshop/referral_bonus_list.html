@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Referral Bonus List</h2>
+
+
+  <div id="loading" style="display:none;">Loading...</div>
+
+  {% include "includes/pagination.html" with items=referral_bonuses %}
+
+  <script>
+    window.onscroll = function() {
+      var loadingElement = document.getElementById('loading');
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        loadingElement.style.display = 'block';
+
+        var nextPage = '{{ referral_bonuses.has_next }}';
+        if (nextPage === 'True') {
+          var nextPageUrl = '{{ referral_bonuses.next_page_number }}';
+
+          fetch('?page=' + nextPageUrl)
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('referral-bonuses-list').innerHTML += data;
+              loadingElement.style.display = 'none';
+            });
+        } else {
+          loadingElement.innerHTML = 'No more referral bonuses to load.';
+        }
+      }
+    }
+  </script>
+
+{% endblock %}
