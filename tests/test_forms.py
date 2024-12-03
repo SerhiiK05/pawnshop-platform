@@ -13,8 +13,9 @@ class ItemFormTest(TestCase):
             "description": "Gaming laptop",
             "value": 3000,
             "status": "on_pawn",
-            "user": CustomUser.objects.create_user(username="testa",
-                                             password="password123")
+            "user": CustomUser.objects.create_user(
+                username="testa", password="password123"
+            ),
         }
         form = ItemForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -25,13 +26,13 @@ class ItemFormTest(TestCase):
             "description": "Old phone very",
             "value": -100,
             "status": "on_pawn",
-            "user": CustomUser.objects.create_user(username="testtt",
-                                             password="password12")
+            "user": CustomUser.objects.create_user(
+                username="testtt", password="password12"
+            ),
         }
         form = ItemForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors["value"],
-                         ["Value should be more than 0"])
+        self.assertEqual(form.errors["value"], ["Value should be more than 0"])
 
 
 class LoanFormTest(TestCase):
@@ -42,14 +43,17 @@ class LoanFormTest(TestCase):
             "interest_rate": 15,
             "term": "9",
             "status": "W",
-            "item": Item.objects.create(name="Ring",
-                                        value=400,
-                                        status="on_pawn",
-                                        user=CustomUser.objects.create_user(
-                                            username="test1",
-                                            password="password3")),
-            "user": CustomUser.objects.create_user(username="test2",
-                                             password="password23")
+            "item": Item.objects.create(
+                name="Ring",
+                value=400,
+                status="on_pawn",
+                user=CustomUser.objects.create_user(
+                    username="test1", password="password3"
+                ),
+            ),
+            "user": CustomUser.objects.create_user(
+                username="test2", password="password23"
+            ),
         }
         form = LoanForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -63,20 +67,23 @@ class PaymentFormTest(TestCase):
             interest_rate=5,
             term="3",
             status="W",
-            item=Item.objects.create(name="Gold Ring",
-                                     value=14400,
-                                     status="on_pawn",
-                                     user=CustomUser.objects.create_user(
-                                         username="test1",
-                                         password="password123")),
-            user=CustomUser.objects.create_user(username="test2",
-                                          password="password123")
+            item=Item.objects.create(
+                name="Gold Ring",
+                value=14400,
+                status="on_pawn",
+                user=CustomUser.objects.create_user(
+                    username="test1", password="password123"
+                ),
+            ),
+            user=CustomUser.objects.create_user(
+                username="test2", password="password123"
+            ),
         )
         form_data = {
             "amount": 500,
             "payment_method": "cash",
             "payment_status": "paid",
-            "loan": loan
+            "loan": loan,
         }
         form = PaymentForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -87,25 +94,25 @@ class PaymentFormTest(TestCase):
             interest_rate=5,
             term="3",
             status="W",
-            item=Item.objects.create(name="Ring",
-                                     value=500,
-                                     status="on_pawn",
-                                     user=CustomUser.objects.create_user(
-                                         username="rrrrr",
-                                         password="password1")),
-            user=CustomUser.objects.create_user(username="rrr",
-                                          password="password1")
+            item=Item.objects.create(
+                name="Ring",
+                value=500,
+                status="on_pawn",
+                user=CustomUser.objects.create_user(
+                    username="rrrrr", password="password1"
+                ),
+            ),
+            user=CustomUser.objects.create_user(username="rrr", password="password1"),
         )
         form_data = {
             "amount": -50,
             "payment_method": "card",
             "payment_status": "paid",
-            "loan": loan
+            "loan": loan,
         }
         form = PaymentForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors["amount"],
-                         ["Amount should be more than 0"])
+        self.assertEqual(form.errors["amount"], ["Amount should be more than 0"])
 
 
 class ReferralBonusFormTest(TestCase):
@@ -122,8 +129,7 @@ class ReferralBonusFormTest(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_referral_code_unique(self):
-        user = CustomUser.objects.create_user(username="Anton",
-                                        password="password12")
+        user = CustomUser.objects.create_user(username="Anton", password="password12")
         ReferralBonus.objects.create(
             referrer=user,
             referral_code="ABCCCADDDD",
@@ -138,6 +144,7 @@ class ReferralBonusFormTest(TestCase):
         }
         form = ReferralBonusForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors["referral_code"],
-                         ["Referral-bonus with this "
-                          "Referral code already exists."])
+        self.assertEqual(
+            form.errors["referral_code"],
+            ["Referral-bonus with this " "Referral code already exists."],
+        )

@@ -19,24 +19,20 @@ class UserModelTest(TestCase):
 
 class LoanModelTest(TestCase):
     def test_referral_bonus(self):
-        referrer = CustomUser.objects.create_user(username="Anton",
-                                            password="password1")
-        invitee = CustomUser.objects.create_user(username="Mark",
-                                           password="password2")
+        referrer = CustomUser.objects.create_user(
+            username="Anton", password="password1"
+        )
+        invitee = CustomUser.objects.create_user(username="Mark", password="password2")
         bonus = ReferralBonus.objects.create(
             referrer=referrer,
             invitee=invitee,
             referral_code="SomeCode",
             bonus_amount=200,
             bonus_awarded=True,
-            bonus_used=False
+            bonus_used=False,
         )
         loan = Loan.objects.create(
-            user=referrer,
-            total_amount=500,
-            interest_rate=12,
-            term="9",
-            status="A"
+            user=referrer, total_amount=500, interest_rate=12, term="9", status="A"
         )
 
         applied = loan.referral_bonus()
@@ -48,22 +44,15 @@ class LoanModelTest(TestCase):
 
 class PaymentModelTest(TestCase):
     def test_payment_transaction(self):
-        user = CustomUser.objects.create_user(username="Anton",
-                                        password="password",
-                                        balance=300)
+        user = CustomUser.objects.create_user(
+            username="Anton", password="password", balance=300
+        )
         loan = Loan.objects.create(
-            user=user,
-            total_amount=300,
-            interest_rate=12,
-            term="9",
-            status="A"
+            user=user, total_amount=300, interest_rate=12, term="9", status="A"
         )
         with transaction.atomic():
             payment = Payment.objects.create(
-                amount=200,
-                payment_method="cash",
-                payment_status="paid",
-                loan=loan
+                amount=200, payment_method="cash", payment_status="paid", loan=loan
             )
             loan.total_amount -= payment.amount
             loan.save()
@@ -72,8 +61,9 @@ class PaymentModelTest(TestCase):
 
 class ReferralBonusModelTest(TestCase):
     def test_generate_referral_code(self):
-        referrer = CustomUser.objects.create_user(username="referrer",
-                                            password="password")
+        referrer = CustomUser.objects.create_user(
+            username="referrer", password="password"
+        )
         bonus = ReferralBonus.objects.create(
             referrer=referrer,
             invitee_email="test@example.com",

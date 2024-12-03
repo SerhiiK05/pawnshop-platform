@@ -9,11 +9,7 @@ class LoanListViewTest(TestCase):
     def setUp(self):
         user = CustomUser.objects.create(username="Anton", balance=500)
         Loan.objects.create(
-            user=user,
-            total_amount=100,
-            interest_rate=10,
-            term="3",
-            status="A"
+            user=user, total_amount=100, interest_rate=10, term="3", status="A"
         )
 
     def test_loan_list_view(self):
@@ -24,7 +20,9 @@ class LoanListViewTest(TestCase):
 
 class PaymentCreateViewTest(TestCase):
     def setUp(self):
-        self.user = CustomUser.objects.create_user(username="Anton", password="password123")
+        self.user = CustomUser.objects.create_user(
+            username="Anton", password="password123"
+        )
         self.item = Item.objects.create(
             name="Knife",
             description="Old one",

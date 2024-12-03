@@ -43,15 +43,10 @@ class Loan(models.Model):
     status = models.CharField(max_length=20, choices=LOAN_STATUS_CHOICES)
     created_date = models.DateTimeField(auto_now_add=True)
     item = models.OneToOneField(
-        Item,
-        on_delete=models.SET_NULL,
-        related_name="loan_item",
-        null=True
+        Item, on_delete=models.SET_NULL, related_name="loan_item", null=True
     )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.PROTECT,
-        related_name="loans_user"
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="loans_user"
     )
 
     def referral_bonus(self):
@@ -81,11 +76,7 @@ class Payment(models.Model):
     transaction_time = models.DateTimeField(auto_now_add=True)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
     payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES)
-    loan = models.ForeignKey(
-        Loan,
-        on_delete=models.CASCADE,
-        related_name="payments"
-    )
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE, related_name="payments")
 
 
 class ReferralBonus(models.Model):
@@ -103,9 +94,7 @@ class ReferralBonus(models.Model):
         null=True,
     )
     invitee_email = models.EmailField(unique=True)
-    bonus_amount = models.DecimalField(max_digits=10,
-                                       decimal_places=2,
-                                       null=True)
+    bonus_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     bonus_awarded = models.BooleanField(default=False)
     bonus_used = models.BooleanField(default=False)
 

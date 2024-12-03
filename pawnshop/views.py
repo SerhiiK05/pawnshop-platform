@@ -1,11 +1,18 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 
 from accounts.models import CustomUser
-from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, ItemNameSearchForm
+from pawnshop.forms import (
+    ItemForm,
+    LoanForm,
+    PaymentForm,
+    ReferralBonusForm,
+    ItemNameSearchForm,
+)
 from pawnshop.models import Item, Loan, Payment, ReferralBonus
 
 
@@ -26,10 +33,9 @@ class ItemListView(generic.ListView):
         form = ItemNameSearchForm(self.request.GET)
 
         if form.is_valid():
-            return Item.objects.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return Item.objects.filter(name__icontains=form.cleaned_data["name"])
         return Item.objects.all()
+
 
 class ItemDetailView(generic.DetailView):
     model = Item
@@ -37,104 +43,128 @@ class ItemDetailView(generic.DetailView):
     queryset = Item.objects.select_related("user")
 
 
-class ItemCreateView(generic.CreateView):
+class ItemCreateView(LoginRequiredMixin, generic.CreateView):
     model = Item
     form_class = ItemForm
     queryset = Item.objects.select_related("user")
     success_url = reverse_lazy("pawnshop:item-list")
 
 
-class ItemUpdateView(generic.UpdateView):
+class ItemUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Item
     fields = ["name", "description", "value", "status", "user"]
     queryset = Item.objects.select_related("user")
     success_url = reverse_lazy("pawnshop:item-list")
 
 
-class ItemDeleteView(generic.DeleteView):
+class ItemDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Item
     success_url = reverse_lazy("pawnshop:item-list")
 
 
-class LoanListView(generic.ListView):
+class LoanListView(LoginRequiredMixin, generic.ListView):
     model = Loan
 
 
-class LoanDetailView(generic.DetailView):
+class LoanDetailView(LoginRequiredMixin, generic.DetailView):
     model = Loan
-    fields = ["total_amount", "interest_rate", "term", "status", "created_date",
-              "item", "user"]
+    fields = [
+        "total_amount",
+        "interest_rate",
+        "term",
+        "status",
+        "created_date",
+        "item",
+        "user",
+    ]
     queryset = Loan.objects.select_related("user").select_related("item")
 
 
-class LoanCreateView(generic.CreateView):
+class LoanCreateView(LoginRequiredMixin, generic.CreateView):
     model = Loan
     form_class = LoanForm
     queryset = Loan.objects.select_related("user").select_related("item")
     success_url = reverse_lazy("pawnshop:loan-list")
 
 
-class LoanUpdateView(generic.UpdateView):
+class LoanUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Loan
-    fields = ["total_amount", "interest_rate", "term", "status", "created_date",
-              "item", "user"]
+    fields = [
+        "total_amount",
+        "interest_rate",
+        "term",
+        "status",
+        "item",
+        "user",
+    ]
     queryset = Loan.objects.select_related("user").select_related("item")
     success_url = reverse_lazy("pawnshop:loan-list")
 
 
-class LoanDeleteView(generic.DeleteView):
+class LoanDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Loan
     success_url = reverse_lazy("pawnshop:loan-list")
 
 
-class PaymentListView(generic.ListView):
+class PaymentListView(LoginRequiredMixin, generic.ListView):
     model = Payment
 
 
-class PaymentCreateView(generic.CreateView):
+class PaymentCreateView(LoginRequiredMixin, generic.CreateView):
     model = Payment
     form_class = PaymentForm
     queryset = Payment.objects.select_related("loan")
     success_url = reverse_lazy("pawnshop:payment-list")
 
 
-class PaymentUpdateView(generic.UpdateView):
+class PaymentUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Payment
-    fields = ["amount", "transaction_date", "payment_method", "payment_status",
-              "loan", "transaction_date",]
+    fields = [
+        "amount",
+        "payment_method",
+        "payment_status",
+        "loan",
+    ]
     queryset = Payment.objects.select_related("loan")
     success_url = reverse_lazy("pawnshop:payment-list")
 
 
-class PaymentDeleteView(generic.DeleteView):
+class PaymentDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Payment
     success_url = reverse_lazy("pawnshop:payment-list")
 
 
-class ReferralBonusListView(generic.ListView):
+class ReferralBonusListView(LoginRequiredMixin, generic.ListView):
     model = ReferralBonus
 
 
-class ReferralBonusCreateView(generic.CreateView):
+class ReferralBonusCreateView(LoginRequiredMixin, generic.CreateView):
     model = ReferralBonus
     form_class = ReferralBonusForm
     queryset = ReferralBonus.objects.select_related("user")
 
 
-class ReferralBonusUpdateView(generic.UpdateView):
+class ReferralBonusUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = ReferralBonus
-    fields = ["referrer", "referral_code", "invitee", "invitee_email",
-              "bonus_amount", "bonus_awarded", "bonus_used",]
+    fields = [
+        "referrer",
+        "referral_code",
+        "invitee",
+        "invitee_email",
+        "bonus_amount",
+        "bonus_awarded",
+        "bonus_used",
+    ]
     queryset = ReferralBonus.objects.select_related("user")
     success_url = reverse_lazy("pawnshop:referral-bonus-list")
 
 
-class ReferralBonusDeleteView(generic.DeleteView):
+class ReferralBonusDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = ReferralBonus
     success_url = reverse_lazy("pawnshop:referral-bonus-list")
 
 
-class PaymentProcessView(View):
+class PaymentProcessView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         user_id = request.POST.get("user_id")
         loan_id = request.POST.get("loan_id")

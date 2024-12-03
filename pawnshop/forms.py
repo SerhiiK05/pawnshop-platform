@@ -23,8 +23,7 @@ class ItemNameSearchForm(forms.Form):
 class LoanForm(forms.ModelForm):
     class Meta:
         model = Loan
-        fields = ["total_amount", "interest_rate", "term", "status",
-                  "item", "user"]
+        fields = ["total_amount", "interest_rate", "term", "status", "item", "user"]
 
         def clean_interest_rate(self):
             interest_rate = self.cleaned_date["interest_rate"]
@@ -36,8 +35,7 @@ class LoanForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = ["amount", "payment_method", "payment_status",
-                  "loan"]
+        fields = ["amount", "payment_method", "payment_status", "loan"]
 
     def clean_amount(self):
         amount = self.cleaned_data["amount"]
@@ -49,4 +47,9 @@ class PaymentForm(forms.ModelForm):
 class ReferralBonusForm(forms.ModelForm):
     class Meta:
         model = ReferralBonus
-        fields = ["referrer", "referral_code", "invitee", "invitee_email",]
+        fields = [
+            "referrer",
+            "referral_code",
+            "invitee",
+            "invitee_email",
+        ]

@@ -24,11 +24,8 @@
                     <td>{{ item.value }}</td>
                     <td>{{ item.get_status_display }}</td>
                     <td>
-                        <a href="{% url 'pawnshop:item-update' item.pk %}" class="btn btn-warning btn-sm">Update</a>
-                        <form action="{% url 'pawnshop:item-delete' item.pk %}" method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
-                        </form>
+                        <a href="{% url 'pawnshop:item-update' pk=item.id %}" class="btn btn-warning btn-sm">Update</a>
+                        <a href="{% url 'pawnshop:item-delete' pk=item.id %}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             {% empty %}

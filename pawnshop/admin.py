@@ -7,4 +7,3 @@ admin.site.register(Item)
 admin.site.register(Loan)
 admin.site.register(Payment)
 admin.site.register(ReferralBonus)
-

@@ -1,13 +1,76 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-  <h1>Pawnshop</h1>
-  <p></p>
-  <h2></h2>
-  <p></p>
-  <ul>
+<!-- Hero Section -->
+<div class="hero-section text-center py-5">
+    <h1>Get Instant Loans with Your Valuable Items</h1>
+    <p>Get fast cash, easy approval, and no hidden fees. Your valuable items are safe with us.</p>
+    <a href="{% url 'pawnshop:loan-create' %}" class="btn btn-primary btn-lg">Apply for a Loan</a>
+</div>
 
-  </ul>
+<!-- Our Services Section -->
+<div class="services py-5">
+    <div class="container">
+        <h2 class="text-center">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="service-box">
+                    <h3>Pawn Your Items</h3>
+                    <p>Get instant cash for your valuable items.</p>
+                    <a href="{% url 'pawnshop:item-list' %}" class="btn btn-secondary btn-lg">Browse Items</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <h3>Apply for a Loan</h3>
+                    <p>We offer flexible loan terms and quick approval.</p>
+                    <a href="{% url 'pawnshop:loan-list' %}" class="btn btn-secondary btn-lg">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <h3>Sell Your Items</h3>
+                    <p>We buy valuable items at competitive prices.</p>
+                    <a href="{% url 'pawnshop:item-list' %}" class="btn btn-secondary btn-lg">Sell Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Featured Items Section -->
+<div class="featured-items py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center">Featured Items</h2>
+        <div class="row">
+            {% for item in item_list %}
+            <div class="col-md-4">
+                <div class="card">
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.description }}</p>
+                    <a href="{% url 'pawnshop:item-detail' item.id %}" class="btn btn-info">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="faq py-5">
+    <div class="container">
+        <h2 class="text-center">Frequently Asked Questions</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>How does pawn work?</h4>
+                <p>We offer loans based on the value of your items. Simply bring in your items, and we’ll offer you cash.</p>
+            </div>
+            <div class="col-md-6">
+                <h4>How do I apply for a loan?</h4>
+                <p>Simply visit our website, fill out the loan application, and submit your items for evaluation.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

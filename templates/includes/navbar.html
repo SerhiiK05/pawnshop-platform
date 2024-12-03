@@ -1,21 +1,38 @@
-        <header class="row bg-dark text-white p-3">
-            <div class="col-12">
-                <h1 class="text-center">PawnShop</h1>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="{% url 'pawnshop:index' %}" class="nav-link text-dark">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'pawnshop:item-list' %}" class="nav-link text-dark">Items</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'pawnshop:loan-list' %}" class="nav-link text-dark">Loans</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'pawnshop:payment-list' %}" class="nav-link text-dark">Payments</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'pawnshop:index' %}">PawnShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">  <!-- "me-auto" для лівого вирівнювання основних пунктів -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pawnshop:index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pawnshop:item-list' %}">Items</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pawnshop:loan-list' %}">Loans</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "pawnshop:payment-list" %}">Payments</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto"> <!-- Використовуємо "ml-auto" для вирівнювання Login і Sign Up справа -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:logout' %}?next={{ request.path }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}?next={{ request.path }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary btn-sm text-white" href="{% url 'accounts:register' %}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
