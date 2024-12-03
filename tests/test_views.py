@@ -1,11 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
-from pawnshop.models import Loan, User, Item, Payment
+
+from accounts.models import CustomUser
+from pawnshop.models import Loan, Item, Payment
 
 
 class LoanListViewTest(TestCase):
     def setUp(self):
-        user = User.objects.create(username="Anton", balance=500)
+        user = CustomUser.objects.create(username="Anton", balance=500)
         Loan.objects.create(
             user=user,
             total_amount=100,
@@ -22,7 +24,7 @@ class LoanListViewTest(TestCase):
 
 class PaymentCreateViewTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="Anton", password="password123")
+        self.user = CustomUser.objects.create_user(username="Anton", password="password123")
         self.item = Item.objects.create(
             name="Knife",
             description="Old one",

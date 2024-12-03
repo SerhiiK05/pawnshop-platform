@@ -1,11 +1,13 @@
 from django.db import transaction
 from django.test import TestCase
-from pawnshop.models import User, Loan, ReferralBonus, Payment
+
+from accounts.models import CustomUser
+from pawnshop.models import Loan, ReferralBonus, Payment
 
 
 class UserModelTest(TestCase):
     def test_user_creation(self):
-        user = User.objects.create(
+        user = CustomUser.objects.create(
             username="user_one",
             balance=100.50,
             role="client",
@@ -17,9 +19,9 @@ class UserModelTest(TestCase):
 
 class LoanModelTest(TestCase):
     def test_referral_bonus(self):
-        referrer = User.objects.create_user(username="Anton",
+        referrer = CustomUser.objects.create_user(username="Anton",
                                             password="password1")
-        invitee = User.objects.create_user(username="Mark",
+        invitee = CustomUser.objects.create_user(username="Mark",
                                            password="password2")
         bonus = ReferralBonus.objects.create(
             referrer=referrer,
@@ -46,7 +48,7 @@ class LoanModelTest(TestCase):
 
 class PaymentModelTest(TestCase):
     def test_payment_transaction(self):
-        user = User.objects.create_user(username="Anton",
+        user = CustomUser.objects.create_user(username="Anton",
                                         password="password",
                                         balance=300)
         loan = Loan.objects.create(
@@ -70,7 +72,7 @@ class PaymentModelTest(TestCase):
 
 class ReferralBonusModelTest(TestCase):
     def test_generate_referral_code(self):
-        referrer = User.objects.create_user(username="referrer",
+        referrer = CustomUser.objects.create_user(username="referrer",
                                             password="password")
         bonus = ReferralBonus.objects.create(
             referrer=referrer,

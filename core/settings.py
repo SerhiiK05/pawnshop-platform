@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "pawnshop",
     "crispy_forms",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -107,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-AUTH_USER_MODEL = "pawnshop.User"
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

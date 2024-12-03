@@ -1,5 +1,7 @@
 from django.test import TestCase
-from pawnshop.models import Item, Loan, ReferralBonus, User
+
+from accounts.models import CustomUser
+from pawnshop.models import Item, Loan, ReferralBonus
 from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm
 
 
@@ -11,7 +13,7 @@ class ItemFormTest(TestCase):
             "description": "Gaming laptop",
             "value": 3000,
             "status": "on_pawn",
-            "user": User.objects.create_user(username="testa",
+            "user": CustomUser.objects.create_user(username="testa",
                                              password="password123")
         }
         form = ItemForm(data=form_data)
@@ -23,7 +25,7 @@ class ItemFormTest(TestCase):
             "description": "Old phone very",
             "value": -100,
             "status": "on_pawn",
-            "user": User.objects.create_user(username="testtt",
+            "user": CustomUser.objects.create_user(username="testtt",
                                              password="password12")
         }
         form = ItemForm(data=form_data)
@@ -43,10 +45,10 @@ class LoanFormTest(TestCase):
             "item": Item.objects.create(name="Ring",
                                         value=400,
                                         status="on_pawn",
-                                        user=User.objects.create_user(
+                                        user=CustomUser.objects.create_user(
                                             username="test1",
                                             password="password3")),
-            "user": User.objects.create_user(username="test2",
+            "user": CustomUser.objects.create_user(username="test2",
                                              password="password23")
         }
         form = LoanForm(data=form_data)
@@ -64,10 +66,10 @@ class PaymentFormTest(TestCase):
             item=Item.objects.create(name="Gold Ring",
                                      value=14400,
                                      status="on_pawn",
-                                     user=User.objects.create_user(
+                                     user=CustomUser.objects.create_user(
                                          username="test1",
                                          password="password123")),
-            user=User.objects.create_user(username="test2",
+            user=CustomUser.objects.create_user(username="test2",
                                           password="password123")
         )
         form_data = {
@@ -88,14 +90,14 @@ class PaymentFormTest(TestCase):
             item=Item.objects.create(name="Ring",
                                      value=500,
                                      status="on_pawn",
-                                     user=User.objects.create_user(
+                                     user=CustomUser.objects.create_user(
                                          username="rrrrr",
                                          password="password1")),
-            user=User.objects.create_user(username="rrr",
+            user=CustomUser.objects.create_user(username="rrr",
                                           password="password1")
         )
         form_data = {
-            "amount": -50,  # Negative amount should trigger validation error
+            "amount": -50,
             "payment_method": "card",
             "payment_status": "paid",
             "loan": loan
@@ -109,7 +111,7 @@ class PaymentFormTest(TestCase):
 class ReferralBonusFormTest(TestCase):
 
     def test_form_is_valid(self):
-        user = User.objects.create_user(username="Anton", password="password1")
+        user = CustomUser.objects.create_user(username="Anton", password="password1")
         form_data = {
             "referrer": user,
             "referral_code": "ABCCCADDDD",
@@ -120,7 +122,7 @@ class ReferralBonusFormTest(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_referral_code_unique(self):
-        user = User.objects.create_user(username="Anton",
+        user = CustomUser.objects.create_user(username="Anton",
                                         password="password12")
         ReferralBonus.objects.create(
             referrer=user,

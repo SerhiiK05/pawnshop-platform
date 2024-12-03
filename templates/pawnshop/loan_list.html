@@ -1,9 +1,49 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-  <h2>Loan List</h2>
+    <h1>Loans List</h1>
 
-  <div id="loading" style="display:none;">Loading...</div>
+    <a href="{% url 'pawnshop:loan-create' %}" class="btn btn-primary mb-3">Create New Loan</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Item</th>
+                <th>Total Amount</th>
+                <th>Interest Rate</th>
+                <th>Term</th>
+                <th>Status</th>
+                <th>Created date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loan_list %}
+                <tr>
+                    <td>{{ loan.user }}</td>
+                    <td>{{ loan.item.name }}</td>
+                    <td>{{ loan.total_amount }}</td>
+                    <td>{{ loan.interest_rate }}</td>
+                    <td>{{ loan.term }}</td>
+                    <td>{{ loan.status }}</td>
+                    <td>{{ loan.created_date }}</td>
+                    <td>
+                        <a href="{% url 'pawnshop:loan-update' loan.pk %}" class="btn btn-warning btn-sm">Update</a>
+                        <form action="{% url 'pawnshop:loan-delete' loan.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this loan?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No loans found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
 
   {% include "includes/pagination.html" with items=loans %}
 
@@ -29,5 +69,3 @@
       }
     }
   </script>
-
-{% endblock %}

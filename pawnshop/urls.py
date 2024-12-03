@@ -2,11 +2,6 @@ from django.urls import path
 
 from pawnshop.views import (
     index,
-    UserListView,
-    UserDetailView,
-    UserCreateView,
-    UserUpdateView,
-    UserDeleteView,
     ItemListView,
     ItemDetailView,
     ItemCreateView,
@@ -24,7 +19,8 @@ from pawnshop.views import (
     ReferralBonusListView,
     ReferralBonusCreateView,
     ReferralBonusUpdateView,
-    ReferralBonusDeleteView, PaymentProcessView,
+    ReferralBonusDeleteView,
+    PaymentProcessView,
 )
 
 app_name = "pawnshop"
@@ -32,23 +28,6 @@ app_name = "pawnshop"
 
 urlpatterns = [
     path("", index, name="index"),
-    path("users/", UserListView.as_view(), name="user-list"),
-    path(
-        "users/<int:pk>/",
-        UserDetailView.as_view(),
-        name="user-detail"
-    ),
-    path("users/create", UserCreateView.as_view(), name="user-create"),
-    path(
-        "users/<int:pk>/update/",
-        UserUpdateView.as_view(),
-        name="user-update"
-    ),
-    path(
-        "users/<int:pk>/delete",
-        UserDeleteView.as_view(),
-        name="user-delete"
-    ),
     path("items/", ItemListView.as_view(), name="item-list"),
     path(
         "items/<int:pk>/",

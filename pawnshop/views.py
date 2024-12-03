@@ -4,42 +4,13 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 
-from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, UserCreationForm, ItemNameSearchForm
-from pawnshop.models import Item, Loan, Payment, ReferralBonus, User
+from accounts.models import CustomUser
+from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm, ItemNameSearchForm
+from pawnshop.models import Item, Loan, Payment, ReferralBonus
 
 
 def index(request):
     return render(request, "pawnshop/index.html")
-
-
-class UserListView(generic.ListView):
-    model = User
-
-
-class UserDetailView(generic.DetailView):
-    model = User
-    fields = ["username", "email", "first_name",
-              "last_name", "balance", "role", "created_at",
-              "updated_at",]
-
-
-class UserCreateView(generic.CreateView):
-    model = User
-    form_class = UserCreationForm
-    success_url = reverse_lazy("pawnshop:user-list")
-
-
-class UserUpdateView(generic.UpdateView):
-    model = User
-    fields = ["username", "email", "first_name",
-              "last_name", "balance", "role", "created_at",
-              "updated_at",]
-    success_url = reverse_lazy("pawnshop:user-list")
-
-
-class UserDeleteView(generic.DeleteView):
-    model = User
-    success_url = reverse_lazy("pawnshop:user-list")
 
 
 class ItemListView(generic.ListView):
@@ -171,7 +142,7 @@ class PaymentProcessView(View):
         payment_method = request.POST.get("payment_method")
 
         try:
-            user = User.objects.get(id=user_id)
+            user = CustomUser.objects.get(id=user_id)
             loan = Loan.objects.get(id=loan_id)
 
             if user.balance < amount:
@@ -203,7 +174,7 @@ class PaymentProcessView(View):
             messages.error(request, "Loan not found.")
             return redirect("loan_list")
 
-        except User.DoesNotExist:
+        except CustomUser.DoesNotExist:
             messages.error(request, "User not found.")
             return redirect("loan_list")
 
