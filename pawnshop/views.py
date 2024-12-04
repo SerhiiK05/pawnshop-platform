@@ -64,6 +64,7 @@ class ItemDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class LoanListView(LoginRequiredMixin, generic.ListView):
     model = Loan
+    queryset = Loan.objects.select_related("user").select_related("item")
 
 
 class LoanDetailView(LoginRequiredMixin, generic.DetailView):
@@ -108,6 +109,7 @@ class LoanDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class PaymentListView(LoginRequiredMixin, generic.ListView):
     model = Payment
+    queryset = Payment.objects.select_related("loan")
 
 
 class PaymentCreateView(LoginRequiredMixin, generic.CreateView):
