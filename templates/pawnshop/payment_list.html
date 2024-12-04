@@ -19,11 +19,11 @@
         <tbody>
             {% for payment in payment_list %}
                 <tr>
-                    <td>{{ payment.loan }}</td>
+                  <td><a href="{% url "pawnshop:loan-detail" pk=payment.loan.id %}">{{ payment.loan }}</a></td>
                     <td>{{ payment.amount }}</td>
                     <td>{{ payment.payment_method }}</td>
                     <td>{{ payment.payment_status }}</td>
-                    <td>{{ payment.transaction.time }}</td>
+                    <td>{{ payment.transaction_time }}</td>
                     <td>
                         <a href="{% url 'pawnshop:payment-update' pk=payment.id %}" class="btn btn-warning btn-sm">Update</a>
                         <a href="{% url 'pawnshop:payment-delete' pk=payment.id %}" class="btn btn-danger btn-sm">Delete</a>

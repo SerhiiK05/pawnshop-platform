@@ -1,0 +1,5 @@
+{% autoescape off %}
+  Hello {{ username }},
+  Please click on the link to confirm your email, to end registration
+  http://{{ domain }}{% url "accounts:activate" uid=uid token=token %}
+{% endautoescape %}

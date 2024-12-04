@@ -35,7 +35,8 @@ class LoanForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = ["amount", "payment_method", "payment_status", "loan"]
+        fields = ["amount", "payment_method", "payment_status", "loan",
+                  "transaction_time",]
 
     def clean_amount(self):
         amount = self.cleaned_data["amount"]

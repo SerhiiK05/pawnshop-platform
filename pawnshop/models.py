@@ -73,7 +73,7 @@ class Payment(models.Model):
         ("unpaid", "Unpaid"),
     ]
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_time = models.DateTimeField(auto_now_add=True)
+    transaction_time = models.DateTimeField()
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
     payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES)
     loan = models.ForeignKey(Loan, on_delete=models.CASCADE, related_name="payments")

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Record a Payment</h2>
+    <h2>Update a Payment</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -17,7 +17,7 @@
                 {% endfor %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Record Payment</button>
+        <button type="submit" class="btn btn-primary">Update Payment</button>
     </form>
 </div>
 {% endblock %}

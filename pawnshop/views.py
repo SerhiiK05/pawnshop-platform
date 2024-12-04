@@ -124,6 +124,7 @@ class PaymentUpdateView(LoginRequiredMixin, generic.UpdateView):
         "payment_method",
         "payment_status",
         "loan",
+        "transaction_time"
     ]
     queryset = Payment.objects.select_related("loan")
     success_url = reverse_lazy("pawnshop:payment-list")
