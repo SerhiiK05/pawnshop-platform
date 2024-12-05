@@ -43,7 +43,18 @@ For Linux/Mac:
   ```bash
   python manage.py loaddata test_data.json
   ```
-###6. Start the development server:
+### 6. Start the development server:
   ```bash
   python manage.py runserver
   ```
+
+# PawnShop Relationship Diagram 
+
+
+![](static/images/PawnShop_Diagram.png)
+
+# PawnShop Preview
+![](static/images/PawnShop_PreView.png)
+
+
+
