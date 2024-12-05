@@ -56,4 +56,16 @@ For Linux/Mac:
 ![](static/images/PawnShop_PreView.png)
 
 
+## TestUser:
+    
+  ```bash
+
+  username: anton_user
+  
+  password: 1qazcde3
+
+  ```
+
+
+
 
