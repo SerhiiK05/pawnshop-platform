@@ -1,4 +1,3 @@
-# pawnshop-platform
 # PawnShop Project
 This is a PawnShop application built with Django. It allows users to pawn their items, apply for loans, and view various items available for loans. The application includes user authentication (registration, login, logout) and has features for managing items and loans.
 ## Features
@@ -43,7 +42,18 @@ For Linux/Mac:
   ```bash
   python manage.py loaddata test_data.json
   ```
-###6. Start the development server:
+### 6. Start the development server:
   ```bash
   python manage.py runserver
   ```
+
+# PawnShop Relationship Diagram 
+
+
+![](static/images/PawnShop_Diagram.png)
+
+# PawnShop Preview
+![](static/images/PawnShop_PreView.png)
+
+
+
