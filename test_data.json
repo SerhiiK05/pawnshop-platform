@@ -159,5 +159,455 @@
       "bonus_awarded": true,
       "bonus_used": true
     }
+  },
+  {
+    "model": "accounts.customuser",
+    "pk": 3,
+    "fields": {
+      "username": "alex_smith",
+      "first_name": "Alex",
+      "last_name": "Smith",
+      "email": "alex.smith@example.com",
+      "balance": "200.00",
+      "role": "user",
+      "password": "password789",
+      "created_at": "2024-12-03T09:00:00",
+      "updated_at": "2024-12-03T09:00:00"
+    }
+  },
+  {
+    "model": "accounts.customuser",
+    "pk": 4,
+    "fields": {
+      "username": "lisa_brown",
+      "first_name": "Lisa",
+      "last_name": "Brown",
+      "email": "lisa.brown@example.com",
+      "balance": "350.00",
+      "role": "client",
+      "password": "securepass123",
+      "created_at": "2024-12-04T08:30:00",
+      "updated_at": "2024-12-04T08:30:00"
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 4,
+    "fields": {
+      "name": "Tablet",
+      "description": "A powerful tablet for productivity",
+      "value": "600.00",
+      "status": "on_pawn",
+      "user": 3
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 5,
+    "fields": {
+      "name": "Camera",
+      "description": "Professional DSLR camera",
+      "value": "1500.00",
+      "status": "redeemed",
+      "user": 4
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 6,
+    "fields": {
+      "name": "Bicycle",
+      "description": "High-end mountain bike",
+      "value": "1200.00",
+      "status": "on_pawn",
+      "user": 4
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 4,
+    "fields": {
+      "total_amount": "1800.00",
+      "interest_rate": "5.50",
+      "term": "10",
+      "status": "A",
+      "created_date": "2024-12-04T14:30:00",
+      "item": 4,
+      "user": 3
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 5,
+    "fields": {
+      "total_amount": "800.00",
+      "interest_rate": "4.75",
+      "term": "12",
+      "status": "P",
+      "created_date": "2024-12-04T15:45:00",
+      "item": 5,
+      "user": 4
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 6,
+    "fields": {
+      "total_amount": "2200.00",
+      "interest_rate": "6.25",
+      "term": "9",
+      "status": "W",
+      "created_date": "2024-12-05T10:00:00",
+      "item": 6,
+      "user": 4
+    }
+  },
+  {
+    "model": "pawnshop.payment",
+    "pk": 4,
+    "fields": {
+      "amount": "900.00",
+      "transaction_time": "2024-12-05T12:00:00",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "loan": 4
+    }
+  },
+  {
+    "model": "pawnshop.payment",
+    "pk": 5,
+    "fields": {
+      "amount": "400.00",
+      "transaction_time": "2024-12-05T14:00:00",
+      "payment_method": "bank_transfer",
+      "payment_status": "unpaid",
+      "loan": 5
+    }
+  },
+  {
+    "model": "pawnshop.payment",
+    "pk": 6,
+    "fields": {
+      "amount": "700.00",
+      "transaction_time": "2024-12-06T10:45:00",
+      "payment_method": "cash",
+      "payment_status": "paid",
+      "loan": 6
+    }
+  },
+  {
+    "model": "pawnshop.referralbonus",
+    "pk": 3,
+    "fields": {
+      "referrer": 3,
+      "referral_code": "GHIJKL5678",
+      "invitee": 3,
+      "invitee_email": "invitee3@example.com",
+      "bonus_amount": "250.00",
+      "bonus_awarded": true,
+      "bonus_used": false
+    }
+  },
+  {
+    "model": "pawnshop.referralbonus",
+    "pk": 4,
+    "fields": {
+      "referrer": 4,
+      "referral_code": "MNO543210",
+      "invitee": 4,
+      "invitee_email": "invitee4@example.com",
+      "bonus_amount": "175.00",
+      "bonus_awarded": true,
+      "bonus_used": true
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 7,
+    "fields": {
+      "name": "Guitar",
+      "description": "Acoustic guitar with premium sound",
+      "value": "450.00",
+      "status": "on_pawn",
+      "user": 3
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 7,
+    "fields": {
+      "total_amount": "500.00",
+      "interest_rate": "5.00",
+      "term": "6",
+      "status": "A",
+      "created_date": "2024-12-06T13:00:00",
+      "item": 7,
+      "user": 3
+    }
+  },
+  {
+    "model": "accounts.customuser",
+    "pk": 5,
+    "fields": {
+      "username": "emma_clark",
+      "first_name": "Emma",
+      "last_name": "Clark",
+      "email": "emma.clark@example.com",
+      "balance": "300.00",
+      "role": "client",
+      "password": "emmapass789",
+      "created_at": "2024-12-05T09:00:00",
+      "updated_at": "2024-12-05T09:00:00"
+    }
+  },
+  {
+    "model": "accounts.customuser",
+    "pk": 6,
+    "fields": {
+      "username": "jack_white",
+      "first_name": "Jack",
+      "last_name": "White",
+      "email": "jack.white@example.com",
+      "balance": "500.00",
+      "role": "user",
+      "password": "jacksecure123",
+      "created_at": "2024-12-06T10:00:00",
+      "updated_at": "2024-12-06T10:00:00"
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 8,
+    "fields": {
+      "name": "Smartwatch",
+      "description": "Latest model with health tracking",
+      "value": "350.00",
+      "status": "on_pawn",
+      "user": 5
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 9,
+    "fields": {
+      "name": "Headphones",
+      "description": "Noise-cancelling headphones",
+      "value": "250.00",
+      "status": "redeemed",
+      "user": 6
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 8,
+    "fields": {
+      "total_amount": "400.00",
+      "interest_rate": "5.00",
+      "term": "8",
+      "status": "A",
+      "created_date": "2024-12-06T14:00:00",
+      "item": 8,
+      "user": 5
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 9,
+    "fields": {
+      "total_amount": "300.00",
+      "interest_rate": "4.00",
+      "term": "6",
+      "status": "P",
+      "created_date": "2024-12-06T15:30:00",
+      "item": 9,
+      "user": 6
+    }
+  },
+
+  {
+    "model": "accounts.customuser",
+    "pk": 7,
+    "fields": {
+      "username": "chris_evans",
+      "first_name": "Chris",
+      "last_name": "Evans",
+      "email": "chris.evans@example.com",
+      "balance": "400.00",
+      "role": "user",
+      "password": "chrisevans2024",
+      "created_at": "2024-12-07T10:00:00",
+      "updated_at": "2024-12-07T10:00:00"
+    }
+  },
+  {
+    "model": "accounts.customuser",
+    "pk": 8,
+    "fields": {
+      "username": "olivia_moore",
+      "first_name": "Olivia",
+      "last_name": "Moore",
+      "email": "olivia.moore@example.com",
+      "balance": "250.00",
+      "role": "client",
+      "password": "oliviamoore123",
+      "created_at": "2024-12-07T11:00:00",
+      "updated_at": "2024-12-07T11:00:00"
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 10,
+    "fields": {
+      "name": "Speaker",
+      "description": "Wireless Bluetooth speaker",
+      "value": "300.00",
+      "status": "on_pawn",
+      "user": 7
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 11,
+    "fields": {
+      "name": "Gaming Console",
+      "description": "Latest generation console",
+      "value": "500.00",
+      "status": "redeemed",
+      "user": 8
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 12,
+    "fields": {
+      "name": "Electric Scooter",
+      "description": "Foldable electric scooter",
+      "value": "800.00",
+      "status": "on_pawn",
+      "user": 8
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 10,
+    "fields": {
+      "total_amount": "350.00",
+      "interest_rate": "5.25",
+      "term": "6",
+      "status": "A",
+      "created_date": "2024-12-07T12:00:00",
+      "item": 10,
+      "user": 7
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 11,
+    "fields": {
+      "total_amount": "600.00",
+      "interest_rate": "4.75",
+      "term": "12",
+      "status": "P",
+      "created_date": "2024-12-07T13:00:00",
+      "item": 11,
+      "user": 8
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 12,
+    "fields": {
+      "total_amount": "900.00",
+      "interest_rate": "6.50",
+      "term": "8",
+      "status": "W",
+      "created_date": "2024-12-07T14:00:00",
+      "item": 12,
+      "user": 8
+    }
+  },
+  {
+    "model": "pawnshop.payment",
+    "pk": 7,
+    "fields": {
+      "amount": "150.00",
+      "transaction_time": "2024-12-07T15:00:00",
+      "payment_method": "cash",
+      "payment_status": "paid",
+      "loan": 10
+    }
+  },
+  {
+    "model": "pawnshop.payment",
+    "pk": 8,
+    "fields": {
+      "amount": "250.00",
+      "transaction_time": "2024-12-07T16:00:00",
+      "payment_method": "bank_transfer",
+      "payment_status": "unpaid",
+      "loan": 11
+    }
+  },
+  {
+    "model": "pawnshop.payment",
+    "pk": 9,
+    "fields": {
+      "amount": "300.00",
+      "transaction_time": "2024-12-07T17:00:00",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "loan": 12
+    }
+  },
+  {
+    "model": "pawnshop.referralbonus",
+    "pk": 5,
+    "fields": {
+      "referrer": 7,
+      "referral_code": "REF7891011",
+      "invitee": 7,
+      "invitee_email": "invitee7@example.com",
+      "bonus_amount": "100.00",
+      "bonus_awarded": true,
+      "bonus_used": false
+    }
+  },
+  {
+    "model": "pawnshop.referralbonus",
+    "pk": 6,
+    "fields": {
+      "referrer": 8,
+      "referral_code": "REF1234567",
+      "invitee": 8,
+      "invitee_email": "invitee8@example.com",
+      "bonus_amount": "150.00",
+      "bonus_awarded": true,
+      "bonus_used": true
+    }
+  },
+  {
+    "model": "pawnshop.item",
+    "pk": 13,
+    "fields": {
+      "name": "Laptop",
+      "description": "Lightweight ultrabook",
+      "value": "1000.00",
+      "status": "on_pawn",
+      "user": 7
+    }
+  },
+  {
+    "model": "pawnshop.loan",
+    "pk": 13,
+    "fields": {
+      "total_amount": "1100.00",
+      "interest_rate": "5.50",
+      "term": "9",
+      "status": "A",
+      "created_date": "2024-12-07T18:00:00",
+      "item": 13,
+      "user": 7
+    }
   }
 ]
+
