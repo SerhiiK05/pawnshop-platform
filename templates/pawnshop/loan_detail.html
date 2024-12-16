@@ -17,7 +17,7 @@
     <p>Status: {{ loan.get_status_display }}</p>
 </div>
 
-<form id="payment-form" method="post" action="{% url "pawnshop:payment-process" %}">
+<form id="payment-form" method="post" action="{% url 'pawnshop:payment-process' %}">
     {% csrf_token %}
     <input type="hidden" name="user_id" value="{{ request.user.id }}">
     <input type="hidden" name="loan_id" value="{{ loan.id }}">
