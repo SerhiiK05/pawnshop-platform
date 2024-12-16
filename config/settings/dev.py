@@ -1,6 +1,6 @@
 from config.settings.base import *
 
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
 
@@ -14,4 +14,4 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

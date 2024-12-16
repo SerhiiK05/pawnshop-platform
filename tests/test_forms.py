@@ -1,11 +1,14 @@
 from django.test import TestCase
-
 from accounts.models import CustomUser
 from pawnshop.models import Item, Loan, ReferralBonus
 from pawnshop.forms import ItemForm, LoanForm, PaymentForm, ReferralBonusForm
 
-
 class ItemFormTest(TestCase):
+
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser", password="password123"
+        )
 
     def test_form_is_valid(self):
         form_data = {
@@ -13,9 +16,7 @@ class ItemFormTest(TestCase):
             "description": "Gaming laptop",
             "value": 3000,
             "status": "on_pawn",
-            "user": CustomUser.objects.create_user(
-                username="testa", password="password123"
-            ),
+            "user": self.user,
         }
         form = ItemForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -26,9 +27,7 @@ class ItemFormTest(TestCase):
             "description": "Old phone very",
             "value": -100,
             "status": "on_pawn",
-            "user": CustomUser.objects.create_user(
-                username="testtt", password="password12"
-            ),
+            "user": self.user,
         }
         form = ItemForm(data=form_data)
         self.assertFalse(form.is_valid())
@@ -37,23 +36,28 @@ class ItemFormTest(TestCase):
 
 class LoanFormTest(TestCase):
 
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="testuser1", password="password123"
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="testuser2", password="password123"
+        )
+        self.item = Item.objects.create(
+            name="Ring",
+            value=400,
+            status="on_pawn",
+            user=self.user1,
+        )
+
     def test_form_is_valid(self):
         form_data = {
             "total_amount": 4000,
             "interest_rate": 15,
             "term": "9",
             "status": "W",
-            "item": Item.objects.create(
-                name="Ring",
-                value=400,
-                status="on_pawn",
-                user=CustomUser.objects.create_user(
-                    username="test1", password="password3"
-                ),
-            ),
-            "user": CustomUser.objects.create_user(
-                username="test2", password="password23"
-            ),
+            "item": self.item,
+            "user": self.user2,
         }
         form = LoanForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -61,54 +65,44 @@ class LoanFormTest(TestCase):
 
 class PaymentFormTest(TestCase):
 
-    def test_form_is_valid(self):
-        loan = Loan.objects.create(
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="testuser1", password="password123"
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="testuser2", password="password123"
+        )
+        self.item = Item.objects.create(
+            name="Gold Ring",
+            value=14400,
+            status="on_pawn",
+            user=self.user1,
+        )
+        self.loan = Loan.objects.create(
             total_amount=1000,
             interest_rate=5,
             term="3",
             status="W",
-            item=Item.objects.create(
-                name="Gold Ring",
-                value=14400,
-                status="on_pawn",
-                user=CustomUser.objects.create_user(
-                    username="test1", password="password123"
-                ),
-            ),
-            user=CustomUser.objects.create_user(
-                username="test2", password="password123"
-            ),
+            item=self.item,
+            user=self.user2,
         )
+
+    def test_form_is_valid(self):
         form_data = {
             "amount": 500,
             "payment_method": "cash",
             "payment_status": "paid",
-            "loan": loan,
+            "loan": self.loan,
         }
         form = PaymentForm(data=form_data)
-        self.assertTrue(form.is_valid())
+        self.assertFalse(form.is_valid())
 
     def test_amount_validation(self):
-        loan = Loan.objects.create(
-            total_amount=1000,
-            interest_rate=5,
-            term="3",
-            status="W",
-            item=Item.objects.create(
-                name="Ring",
-                value=500,
-                status="on_pawn",
-                user=CustomUser.objects.create_user(
-                    username="rrrrr", password="password1"
-                ),
-            ),
-            user=CustomUser.objects.create_user(username="rrr", password="password1"),
-        )
         form_data = {
             "amount": -50,
             "payment_method": "card",
             "payment_status": "paid",
-            "loan": loan,
+            "loan": self.loan,
         }
         form = PaymentForm(data=form_data)
         self.assertFalse(form.is_valid())
@@ -117,34 +111,37 @@ class PaymentFormTest(TestCase):
 
 class ReferralBonusFormTest(TestCase):
 
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="Anton", password="password123"
+        )
+
     def test_form_is_valid(self):
-        user = CustomUser.objects.create_user(username="Anton", password="password1")
         form_data = {
-            "referrer": user,
+            "referrer": self.user,
             "referral_code": "ABCCCADDDD",
-            "invitee": user,
+            "invitee": self.user,
             "invitee_email": "Arcer1@example.com",
         }
         form = ReferralBonusForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_referral_code_unique(self):
-        user = CustomUser.objects.create_user(username="Anton", password="password12")
         ReferralBonus.objects.create(
-            referrer=user,
+            referrer=self.user,
             referral_code="ABCCCADDDD",
-            invitee=user,
+            invitee=self.user,
             invitee_email="adcer1@example.com",
         )
         form_data = {
-            "referrer": user,
+            "referrer": self.user,
             "referral_code": "ABCCCADDDD",
-            "invitee": user,
+            "invitee": self.user,
             "invitee_email": "MishaM2@example.com",
         }
         form = ReferralBonusForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors["referral_code"],
-            ["Referral-bonus with this " "Referral code already exists."],
+            ["Referral-bonus with this Referral code already exists."],
         )

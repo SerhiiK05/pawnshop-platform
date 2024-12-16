@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "pawnshop",
     "crispy_forms",
     "accounts",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -134,9 +135,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # email
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
 EMAIL_PORT = 587
 #
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend

@@ -118,6 +118,28 @@ class PaymentCreateView(LoginRequiredMixin, generic.CreateView):
     queryset = Payment.objects.select_related("loan")
     success_url = reverse_lazy("pawnshop:payment-list")
 
+    def form_valid(self, form):
+        payment = form.save(commit=False)
+        loan = payment.loan
+
+        if loan.status in ['P', 'paid_off']:
+            messages.error(self.request, "This loan is already paid off.")
+            return redirect("loan_detail", pk=loan.id)
+
+        user = self.request.user
+        if user.balance < payment.amount:
+            messages.error(self.request, "Insufficient balance for the payment.")
+            return redirect("loan_detail", pk=loan.id)
+
+        payment.save()
+        loan.total_amount -= payment.amount
+        if loan.total_amount <= 0:
+            loan.status = "P"
+            loan.total_amount = 0
+        loan.save()
+
+        return super().form_valid(form)
+
 
 class PaymentUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Payment

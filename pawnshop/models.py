@@ -3,6 +3,7 @@ import random
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -21,6 +22,10 @@ class Item(models.Model):
         related_name="items",
         null=True,
     )
+
+    def clean(self):
+        if self.value is None or self.value <= 0:
+            raise ValidationError("Value should be more than 0")
 
 
 class Loan(models.Model):
