@@ -47,6 +47,24 @@ For Linux/Mac:
   python manage.py runserver
   ```
 
+## Environment Variables
+  ``` bash
+  POSTGRES_DB=<db_name>
+  POSTGRES_DB_PORT=<db_port>
+  POSTGRES_USER=<db_user>
+  POSTGRES_PASSWORD=<db_password>
+  POSTGRES_HOST=<db_host>
+  ```
+
+### Download enviroment variables from .env_sample
+  ``` bash
+
+  pip install python-decouple
+
+  ```
+
+
+
 # PawnShop Relationship Diagram 
 
 
